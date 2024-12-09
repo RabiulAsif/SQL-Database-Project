@@ -1,0 +1,82 @@
+###PROJECT QUERY###
+
+CREATE DATABASE ITCARE;
+GO
+
+USE ITCARE;
+GO
+
+CREATE TABLE CUSTOMER (
+    customer_id INT PRIMARY KEY,
+    customer_fullname VARCHAR(50),
+    customer_phone VARCHAR(20),
+    customer_address VARCHAR(30),
+    customer_email VARCHAR(30),
+    customer_password VARCHAR(20)
+);
+
+SELECT * FROM CUSTOMER;
+
+CREATE TABLE ADMIN(
+admin_id INT PRIMARY KEY,
+admin_phone VARCHAR(20),
+admin_password VARCHAR(20),
+admin_balance DECIMAL(6,2)
+);
+
+SELECT * FROM ADMIN
+
+CREATE TABLE TYPEWORK(
+typework_id INT PRIMARY KEY,
+work1 VARCHAR(50),
+work2 VARCHAR(50),
+work3 VARCHAR(50)
+);
+
+SELECT * FROM TYPEWORK;
+
+CREATE TABLE COMPANY(
+company_id INT PRIMARY KEY,
+company_phone VARCHAR(20),
+company_address VARCHAR(50),
+company_email VARCHAR(50),
+company_password varchar(20),
+company_balance DECIMAL(6,2),
+company_rating VARCHAR(10),
+typework_id INT,
+FOREIGN KEY(typework_id) REFERENCES TYPEWORK(typework_id)
+);
+
+SELECT * FROM COMPANY
+
+CREATE TABLE APPROVAL(
+approval_id INT PRIMARY KEY,
+customer_id INT,
+FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id),
+company_id INT,
+FOREIGN KEY(company_id) REFERENCES COMPANY(company_id),
+approval_status VARCHAR(20)
+);
+
+SELECT * FROM APPROVAL
+
+CREATE TABLE TRANSACTION_TABLE(
+transaction_id INT PRIMARY KEY,
+customer_id INT,
+FOREIGN KEY(customer_id) REFERENCES CUSTOMER(customer_id),
+company_id INT,
+FOREIGN KEY(company_id) REFERENCES COMPANY(company_id),
+payment DECIMAL(6,2),
+worktype VARCHAR(50),
+schedule_date date,
+approval_id INT,
+FOREIGN KEY(approval_id) REFERENCES APPROVAL(approval_id)
+);
+SELECT * FROM TRANSACTION_TABLE
+
+ALTER TABLE APPROVAL
+ADD transaction_id INT,
+FOREIGN KEY(transaction_id ) REFERENCES TRANSACTION_TABLE(transaction_id );
+
+  SELECT * FROM APPROVAL
+
